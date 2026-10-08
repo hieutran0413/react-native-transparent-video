@@ -10,11 +10,11 @@ bổ sung:
 - [`converter/`](converter): công cụ một file HTML, chuyển video có alpha thành MP4 xếp chồng
   ngay trong trình duyệt.
 
-![Converter ở giữa, cùng video chạy trên Android (trái) và iOS (phải)](docs/demo.gif)
+[![Converter ở giữa, cùng video chạy trên Android (trái) và iOS (phải)](docs/demo.gif)](docs/demo.mp4)
 
 Trong bản quay: file `Comp.mov` xuất từ After Effects (380 MB) được chuyển thành
 `comp_stacked.mp4` (501 KB) bằng converter, rồi phát trong suốt trên Android (trái) và iOS
-(phải) với 4 nền gradient. Bản quay đầy đủ: [docs/demo.mp4](docs/demo.mp4)
+(phải) với 4 nền gradient. Bấm vào ảnh để xem bản quay nét hơn: [docs/demo.mp4](docs/demo.mp4)
 
 ## Quy trình từ After Effects
 
