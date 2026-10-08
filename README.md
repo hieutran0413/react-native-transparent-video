@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
 });
 ```
 
+## Demo
+
+A React Native 0.87 demo app for checking alpha rendering on iOS and Android lives in [`demo/`](demo/README.md).
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
