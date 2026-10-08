@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alpha Video Converter</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Alpha Video Converter</h1>
+        <p>
+          Chuyển video có kênh alpha (ProRes 4444, WebM VP9) thành MP4 xếp chồng cho
+          <code>react-native-transparent-video</code>. Mọi thứ chạy trong trình duyệt, file không
+          được tải lên đâu cả.
+        </p>
+      </header>
+
+      <label id="drop" class="drop" for="file">
+        <input id="file" type="file" accept=".mov,.webm,.mkv,video/*" hidden />
+        <strong id="drop-title">Kéo thả video vào đây</strong>
+        <span id="drop-hint">hoặc bấm để chọn file · ProRes 4444 (.mov) hoặc WebM VP9 có alpha</span>
+      </label>
+
+      <section class="options">
+        <label>
+          Chiều rộng
+          <select id="width">
+            <option value="">Giữ nguyên</option>
+            <option value="1080">1080 px</option>
+            <option value="720">720 px</option>
+            <option value="540">540 px</option>
+            <option value="360">360 px</option>
+          </select>
+        </label>
+        <label>
+          Tốc độ khung hình
+          <select id="fps">
+            <option value="">Giữ nguyên</option>
+            <option value="30">30 fps</option>
+            <option value="24">24 fps</option>
+          </select>
+        </label>
+        <label>
+          Chất lượng
+          <select id="quality">
+            <option value="20">Cao (file lớn)</option>
+            <option value="26" selected>Cân bằng</option>
+            <option value="32">Nhẹ nhất</option>
+          </select>
+        </label>
+        <button id="convert" disabled>Chuyển đổi</button>
+      </section>
+
+      <section id="status" class="status" hidden>
+        <div class="bar"><div id="bar-fill"></div></div>
+        <p id="status-text"></p>
+      </section>
+
+      <section id="result" hidden>
+        <h2>Kết quả</h2>
+        <p id="result-info"></p>
+        <a id="download" class="button">Tải MP4</a>
+
+        <div class="previews">
+          <figure>
+            <figcaption>Xem thử trên nền</figcaption>
+            <div id="stage" class="stage">
+              <span>BEHIND THE VIDEO</span>
+              <canvas id="canvas"></canvas>
+            </div>
+            <div id="swatches" class="swatches"></div>
+          </figure>
+          <figure>
+            <figcaption>File xuất ra (màu ở trên, mask ở dưới)</figcaption>
+            <video id="stacked" muted loop playsinline autoplay></video>
+          </figure>
+        </div>
+      </section>
+
+      <details>
+        <summary>Yêu cầu khi xuất từ After Effects</summary>
+        <ul>
+          <li>QuickTime, Apple ProRes 4444, Channels <b>RGB + Alpha</b>.</li>
+          <li>Color: <b>Straight (Unmatted)</b>. Premultiplied sẽ làm viền bán trong suốt bị tối.</li>
+          <li>Không âm thanh, tốc độ khung hình cố định.</li>
+          <li>Giữ cạnh dài của comp từ 1080 px trở xuống: file xuất ra cao gấp đôi comp.</li>
+          <li>File nên dưới vài trăm MB vì toàn bộ được xử lý trong bộ nhớ của tab.</li>
+        </ul>
+      </details>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

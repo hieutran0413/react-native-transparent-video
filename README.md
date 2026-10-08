@@ -67,7 +67,19 @@ thường có chiều cao gấp đôi, trong đó
 
 Mask phải trùng vị trí với phần màu ở mọi frame; nếu lệch, video sẽ có quầng đen hoặc mất hình.
 
-Tạo file alpha-packing từ video có alpha thật (ProRes 4444, WebM…) bằng ffmpeg:
+### Tạo file từ After Effects
+
+Xuất comp ra **ProRes 4444, RGB + Alpha, Straight (Unmatted)**, rồi dùng web app trong
+[`converter/`](converter/README.md) để chuyển thành MP4 xếp chồng. App chạy hoàn toàn trong
+trình duyệt và có sẵn phần xem thử trên nền gradient.
+
+```sh
+cd converter
+npm install
+npm run dev
+```
+
+Hoặc dùng ffmpeg trực tiếp:
 
 ```sh
 ffmpeg -i input.mov -filter_complex \
