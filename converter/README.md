@@ -23,16 +23,18 @@ cần bấm đúp để mở bằng Chrome.
    đúng cỡ hiển thị, 24 fps, chất lượng "Nhẹ nhất".
 3. Bấm **Chuyển đổi**, xem thử trên 4 nền gradient, rồi **Tải MP4**.
 
-Định dạng đầu vào: ProRes 4444 (`.mov`) hoặc WebM VP9 có alpha. Video không có kênh alpha
+Định dạng đầu vào: QuickTime Animation hoặc ProRes 4444 (`.mov`), hoặc WebM VP9 có alpha. Video không có kênh alpha
 sẽ bị từ chối.
 
 ## Yêu cầu khi xuất từ After Effects
 
-- QuickTime, Apple ProRes 4444, Channels **RGB + Alpha**.
+- QuickTime (.mov), codec **Animation** hoặc **Apple ProRes 4444**, Channels **RGB + Alpha**.
+  ProRes 4444 cho file nguồn nhỏ hơn nhiều.
 - Color: **Straight (Unmatted)**. Premultiplied làm viền bán trong suốt bị tối.
 - Không âm thanh, tốc độ khung hình cố định.
-- Cạnh dài của comp từ 1080 px trở xuống: file xuất ra cao gấp đôi comp.
-- File nên dưới vài trăm MB vì toàn bộ được xử lý trong bộ nhớ của tab.
+- File xuất ra cao gấp đôi comp. Comp 1080×1440 đã chạy tốt trên iOS và Android; comp lớn hơn
+  thì chọn "Chiều rộng" nhỏ lại khi chuyển đổi.
+- File nguồn 400 MB đã thử được. Trên 500 MB trình duyệt có thể hết bộ nhớ.
 
 ## Bên trong
 

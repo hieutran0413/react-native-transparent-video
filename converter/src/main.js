@@ -176,7 +176,7 @@ function explainFailure(error) {
     return 'Video này không có kênh alpha. Hãy xuất lại từ After Effects với Channels: RGB + Alpha.';
   }
   if (/Invalid data found|moov atom not found|Unknown format/i.test(text)) {
-    return 'Không đọc được file này. Hãy dùng ProRes 4444 (.mov) hoặc WebM VP9.';
+    return 'Không đọc được file này. Hãy dùng QuickTime Animation, ProRes 4444 (.mov) hoặc WebM VP9.';
   }
   return 'Chuyển đổi thất bại. Mở console của trình duyệt để xem log ffmpeg.';
 }

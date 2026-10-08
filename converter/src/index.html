@@ -13,7 +13,7 @@
       <header>
         <h1>Alpha Video Converter</h1>
         <p>
-          Chuyển video có kênh alpha (ProRes 4444, WebM VP9) thành MP4 xếp chồng cho
+          Chuyển video có kênh alpha (QuickTime Animation, ProRes 4444, WebM VP9) thành MP4 xếp chồng cho
           <code>react-native-transparent-video</code>. Mọi thứ chạy trong trình duyệt, file không
           được tải lên đâu cả.
         </p>
@@ -22,7 +22,7 @@
       <label id="drop" class="drop" for="file">
         <input id="file" type="file" accept=".mov,.webm,.mkv,video/*" hidden />
         <strong id="drop-title">Kéo thả video vào đây</strong>
-        <span id="drop-hint">hoặc bấm để chọn file · ProRes 4444 (.mov) hoặc WebM VP9 có alpha</span>
+        <span id="drop-hint">hoặc bấm để chọn file · .mov (Animation, ProRes 4444) hoặc WebM VP9 có alpha</span>
       </label>
 
       <section class="options">
@@ -84,11 +84,17 @@
       <details>
         <summary>Yêu cầu khi xuất từ After Effects</summary>
         <ul>
-          <li>QuickTime, Apple ProRes 4444, Channels <b>RGB + Alpha</b>.</li>
+          <li>
+            QuickTime (.mov), codec <b>Animation</b> hoặc <b>Apple ProRes 4444</b>, Channels
+            <b>RGB + Alpha</b>. ProRes 4444 cho file nguồn nhỏ hơn nhiều.
+          </li>
           <li>Color: <b>Straight (Unmatted)</b>. Premultiplied sẽ làm viền bán trong suốt bị tối.</li>
           <li>Không âm thanh, tốc độ khung hình cố định.</li>
-          <li>Giữ cạnh dài của comp từ 1080 px trở xuống: file xuất ra cao gấp đôi comp.</li>
-          <li>File nên dưới vài trăm MB vì toàn bộ được xử lý trong bộ nhớ của tab.</li>
+          <li>
+            File xuất ra cao gấp đôi comp. Comp 1080×1440 đã chạy tốt trên iOS và Android; comp
+            lớn hơn thì chọn "Chiều rộng" nhỏ lại khi chuyển đổi.
+          </li>
+          <li>File nguồn 400 MB đã thử được. Trên 500 MB trình duyệt có thể hết bộ nhớ.</li>
         </ul>
       </details>
     </main>

@@ -69,7 +69,7 @@ Mask phải trùng vị trí với phần màu ở mọi frame; nếu lệch, vi
 
 ### Tạo file từ After Effects
 
-Xuất comp ra **ProRes 4444, RGB + Alpha, Straight (Unmatted)**, rồi dùng công cụ trong
+Xuất comp ra QuickTime **Animation hoặc ProRes 4444, RGB + Alpha, Straight (Unmatted)**, rồi dùng công cụ trong
 [`converter/`](converter/README.md) để chuyển thành MP4 xếp chồng. Công cụ là một file HTML
 duy nhất, mở trực tiếp bằng trình duyệt, có sẵn phần xem thử trên nền gradient.
 
