@@ -15,40 +15,16 @@ toolchain hiện tại, nên demo này được tạo riêng.
 - Dòng chữ `BEHIND THE VIDEO` nằm dưới video. Nếu alpha hoạt động, nền gradient và dòng chữ
   hiện xuyên qua vùng trong suốt của video.
 
-## Yêu cầu
-
-- Node >= 22.11
-- iOS: Xcode + CocoaPods
-- Android: Android SDK, JDK 17, một emulator hoặc thiết bị
-
 ## Chạy
 
-```sh
-cd demo
-npm install
-npm start
-```
-
-Mở terminal khác:
+Từ thư mục gốc repo:
 
 ```sh
-# iOS
-cd demo/ios && pod install && cd ..
-npm run ios
-
-# Android
-export ANDROID_HOME=~/Library/Android/sdk
-export JAVA_HOME=/path/to/jdk-17
-npm run android
+./run-demo.sh ios
+./run-demo.sh android
 ```
 
-Trên Android 17 (API 37), app debug cần quyền local network để kết nối Metro. Nếu app báo
-`Unable to load script`, cấp quyền rồi mở lại app:
-
-```sh
-adb reverse tcp:8081 tcp:8081
-adb shell pm grant com.alphavideodemo android.permission.ACCESS_LOCAL_NETWORK
-```
+Xem [README gốc](../README.md) để biết yêu cầu và cách xử lý lỗi.
 
 ## Dùng video của bạn
 
