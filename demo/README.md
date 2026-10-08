@@ -9,7 +9,8 @@ toolchain hiện tại, nên demo này được tạo riêng.
 
 ## Màn hình test
 
-- Hàng trên: chọn nguồn video — `alpha-demo` (video tự tạo), `parallax x6` (6 video mẫu
+- Hàng trên: chọn nguồn video — `comp` (video xuất từ After Effects qua
+  [converter](../converter/README.md)), `alpha-demo` (video tự tạo), `parallax x6` (6 video mẫu
   của thư viện xếp chồng), `layer 4` (một lớp đơn).
 - 4 card vuông **Xanh / Đỏ / Tím / Vàng**: đổi nền gradient phía sau video.
 - Dòng chữ `BEHIND THE VIDEO` nằm dưới video. Nếu alpha hoạt động, nền gradient và dòng chữ

@@ -1,13 +1,31 @@
 # Alpha Video Demo — react-native-transparent-video
 
-Demo kiểm tra khả năng phát **video trong suốt (alpha)** trên React Native, chạy song song
-trên iOS và Android. Repo này là bản fork của
+Demo phát **video trong suốt (alpha)** trên React Native, chạy song song trên iOS và Android,
+kèm công cụ chuyển video xuất từ After Effects sang định dạng thư viện cần. Repo này là bản
+fork của
 [status-im/react-native-transparent-video](https://github.com/status-im/react-native-transparent-video),
-bổ sung một app demo React Native 0.87 trong thư mục [`demo/`](demo).
+bổ sung:
 
-![Demo chạy trên iOS và Android](docs/demo.gif)
+- [`demo/`](demo): app React Native 0.87 để kiểm tra alpha trên nền gradient.
+- [`converter/`](converter): công cụ một file HTML, chuyển video có alpha thành MP4 xếp chồng
+  ngay trong trình duyệt.
 
-Bản quay đầy đủ: [docs/demo.mp4](docs/demo.mp4)
+![Converter ở giữa, cùng video chạy trên Android (trái) và iOS (phải)](docs/demo.gif)
+
+Trong bản quay: file `Comp.mov` xuất từ After Effects (380 MB) được chuyển thành
+`comp_stacked.mp4` (501 KB) bằng converter, rồi phát trong suốt trên Android (trái) và iOS
+(phải) với 4 nền gradient. Bản quay đầy đủ: [docs/demo.mp4](docs/demo.mp4)
+
+## Quy trình từ After Effects
+
+1. Xuất comp ra QuickTime **Animation hoặc ProRes 4444, RGB + Alpha, Straight (Unmatted)**.
+2. Tải
+   [alpha-video-converter.html](https://github.com/hieutran0413/react-native-transparent-video/releases/latest/download/alpha-video-converter.html)
+   (khoảng 41 MB), bấm đúp để mở bằng Chrome. Không cần cài đặt, video không rời khỏi máy.
+3. Kéo thả file `.mov` vào, bấm **Chuyển đổi**, xem thử rồi **Tải MP4**.
+4. Dùng file MP4 với `<TransparentVideo>` trong app.
+
+Chi tiết và yêu cầu xuất file: [converter/README.md](converter/README.md).
 
 ## Chạy demo
 
@@ -49,7 +67,8 @@ Metro. Lần build đầu mất vài phút.
 
 ## Trong demo có gì
 
-- **Chọn nguồn video**: `alpha-demo` (video tự tạo), `parallax x6` (6 video mẫu của thư viện
+- **Chọn nguồn video**: `comp` (video xuất từ After Effects qua converter), `alpha-demo`
+  (video tự tạo), `parallax x6` (6 video mẫu của thư viện
   xếp chồng), `layer 4` (một lớp đơn).
 - **4 card gradient Xanh / Đỏ / Tím / Vàng**: đổi nền phía sau video.
 - Dòng chữ `BEHIND THE VIDEO` nằm dưới video. Alpha hoạt động khi nền gradient và dòng chữ
@@ -67,19 +86,7 @@ thường có chiều cao gấp đôi, trong đó
 
 Mask phải trùng vị trí với phần màu ở mọi frame; nếu lệch, video sẽ có quầng đen hoặc mất hình.
 
-### Tạo file từ After Effects
-
-Xuất comp ra QuickTime **Animation hoặc ProRes 4444, RGB + Alpha, Straight (Unmatted)**, rồi dùng công cụ trong
-[`converter/`](converter/README.md) để chuyển thành MP4 xếp chồng. Công cụ là một file HTML
-duy nhất, mở trực tiếp bằng trình duyệt, có sẵn phần xem thử trên nền gradient.
-
-```sh
-cd converter
-npm install
-npm run build   # tạo dist/alpha-video-converter.html
-```
-
-Hoặc dùng ffmpeg trực tiếp:
+Cách nhanh nhất để tạo file này là dùng converter ở trên. Hoặc dùng ffmpeg trực tiếp:
 
 ```sh
 ffmpeg -i input.mov -filter_complex \

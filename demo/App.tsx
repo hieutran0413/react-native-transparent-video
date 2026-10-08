@@ -10,6 +10,7 @@ import {
 import TransparentVideo from 'react-native-transparent-video';
 
 const SOURCES: { label: string; layers: number[] }[] = [
+  { label: 'comp', layers: [require('./assets/videos/comp_stacked.mp4')] },
   { label: 'alpha-demo', layers: [require('./assets/videos/alpha_demo.mp4')] },
   {
     label: 'parallax x6',

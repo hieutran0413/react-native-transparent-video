@@ -5,7 +5,12 @@ Chuyển video có kênh alpha thành MP4 xếp chồng (màu ở trên, mask �
 duyệt, không cần cài đặt hay máy chủ. ffmpeg được nhúng sẵn trong file
 ([ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)) nên video không rời khỏi máy.
 
-## Tạo file HTML
+## Tải về
+
+[alpha-video-converter.html](https://github.com/hieutran0413/react-native-transparent-video/releases/latest/download/alpha-video-converter.html)
+(khoảng 41 MB). Bấm đúp để mở bằng Chrome.
+
+## Tự build
 
 ```sh
 cd converter
@@ -13,8 +18,7 @@ npm install
 npm run build
 ```
 
-Kết quả: `dist/alpha-video-converter.html` (khoảng 41 MB). Gửi file này cho người dùng; họ chỉ
-cần bấm đúp để mở bằng Chrome.
+Kết quả: `dist/alpha-video-converter.html`.
 
 ## Dùng
 
