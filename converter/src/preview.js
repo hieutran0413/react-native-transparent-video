@@ -29,7 +29,7 @@ function compile(gl, type, source) {
   return shader;
 }
 
-export function createPreview(canvas, video) {
+function createPreview(canvas, video) {
   const gl = canvas.getContext('webgl', { premultipliedAlpha: true });
   if (!gl) {
     return;

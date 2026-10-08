@@ -1,8 +1,50 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile } from '@ffmpeg/util';
-import coreURL from '@ffmpeg/core?url';
-import wasmURL from '@ffmpeg/core/wasm?url';
-import { createPreview } from './preview.js';
+// Minimal promise-based client for src/worker.js.
+class FFmpegClient {
+  #worker;
+  #pending = new Map();
+  #nextId = 0;
+  onLog = () => {};
+
+  constructor(workerURL) {
+    this.#worker = new Worker(workerURL);
+    this.#worker.onmessage = ({ data }) => {
+      if ('log' in data) {
+        this.onLog(data.log);
+        return;
+      }
+      const { resolve, reject } = this.#pending.get(data.id);
+      this.#pending.delete(data.id);
+      if (data.error) {
+        reject(new Error(data.error));
+      } else {
+        resolve(data.result);
+      }
+    };
+  }
+
+  #call(type, payload, transfer = []) {
+    return new Promise((resolve, reject) => {
+      const id = this.#nextId++;
+      this.#pending.set(id, { resolve, reject });
+      this.#worker.postMessage({ id, type, payload }, transfer);
+    });
+  }
+
+  load = (wasmBinary) => this.#call('load', { wasmBinary }, [wasmBinary.buffer]);
+  exec = (args) => this.#call('exec', { args });
+  writeFile = (path, data) => this.#call('writeFile', { path, data }, [data.buffer]);
+  readFile = (path) => this.#call('readFile', { path });
+  deleteFile = (path) => this.#call('deleteFile', { path });
+}
+
+function decodeEmbedded(id) {
+  const binary = atob(document.getElementById(id).textContent);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
 
 const BACKGROUNDS = [
   'linear-gradient(135deg, #00c6ff 0%, #0047ff 100%)',
@@ -25,6 +67,7 @@ const stacked = $('stacked');
 let file = null;
 let ffmpeg = null;
 let log = [];
+let onLogLine = null;
 let outputURL = null;
 
 const formatSize = (bytes) =>
@@ -63,9 +106,13 @@ async function loadFFmpeg() {
   if (ffmpeg) {
     return ffmpeg;
   }
-  const instance = new FFmpeg();
-  instance.on('log', ({ message }) => log.push(message));
-  await instance.load({ coreURL, wasmURL });
+  const workerBlob = new Blob([decodeEmbedded('worker-source')], { type: 'text/javascript' });
+  const instance = new FFmpegClient(URL.createObjectURL(workerBlob));
+  instance.onLog = (message) => {
+    log.push(message);
+    onLogLine?.(message);
+  };
+  await instance.load(decodeEmbedded('ffmpeg-wasm'));
   ffmpeg = instance;
   return ffmpeg;
 }
@@ -90,7 +137,15 @@ function buildArgs(inputName, outputName) {
   args.push(
     '-i', inputName,
     // format=rgba keeps the alpha plane through scale, which would otherwise drop it.
-    '-filter_complex', `[0:v]${filters.join(',')},format=rgba,split[c][a];[a]alphaextract[m];[c][m]vstack`,
+    // The final scale converts to YUV with the BT.709 matrix the output is tagged with;
+    // ffmpeg's default (BT.601) makes players that assume BT.709 shift the colors.
+    '-filter_complex',
+    `[0:v]${filters.join(',')},format=rgba,split[c][a];[a]alphaextract[m];` +
+      '[c][m]vstack,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p',
+    '-colorspace', 'bt709',
+    '-color_primaries', 'bt709',
+    '-color_trc', 'bt709',
+    '-color_range', 'tv',
     '-c:v', 'libx264',
     '-preset', 'medium',
     '-crf', $('quality').value,
@@ -135,7 +190,7 @@ async function convert() {
   const outputName = 'output.mp4';
   let duration = 0;
 
-  const onLog = ({ message }) => {
+  const trackProgress = (message) => {
     const total = message.match(/Duration: (\d+):(\d+):(\d+\.\d+)/);
     if (total) {
       duration = toSeconds(total[1], total[2], total[3]);
@@ -148,11 +203,11 @@ async function convert() {
   };
 
   try {
-    setStatus('Đang tải ffmpeg (khoảng 32 MB, chỉ lần đầu)…', { progress: 0 });
+    setStatus('Đang khởi động ffmpeg…', { progress: 0 });
     const instance = await loadFFmpeg();
 
     setStatus('Đang đọc file…', { progress: 0 });
-    await instance.writeFile(inputName, await fetchFile(file));
+    await instance.writeFile(inputName, new Uint8Array(await file.arrayBuffer()));
 
     if (!(await hasAlpha(instance, inputName))) {
       await instance.deleteFile(inputName);
@@ -160,7 +215,7 @@ async function convert() {
     }
 
     const started = performance.now();
-    instance.on('log', onLog);
+    onLogLine = trackProgress;
     const exitCode = await instance.exec(buildArgs(inputName, outputName));
     if (exitCode !== 0) {
       throw new Error(`ffmpeg exited with code ${exitCode}`);
@@ -176,7 +231,7 @@ async function convert() {
     console.error(error, log.join('\n'));
     setStatus(explainFailure(error), { error: true });
   } finally {
-    ffmpeg?.off('log', onLog);
+    onLogLine = null;
     convertButton.disabled = false;
   }
 }

@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alpha Video Converter</title>
-    <link rel="stylesheet" href="/src/style.css" />
+    <style>
+/* @style */
+    </style>
   </head>
   <body>
     <main>
@@ -90,6 +92,10 @@
         </ul>
       </details>
     </main>
-    <script type="module" src="/src/main.js"></script>
+    <script id="worker-source" type="application/base64">@worker</script>
+    <script id="ffmpeg-wasm" type="application/base64">@wasm</script>
+    <script>
+/* @app */
+    </script>
   </body>
 </html>

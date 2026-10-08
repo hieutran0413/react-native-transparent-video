@@ -1,19 +1,20 @@
 # Alpha Video Converter
 
-Web app chuyển video có kênh alpha thành MP4 xếp chồng (màu ở trên, mask ở dưới) cho
-`react-native-transparent-video`. Chạy hoàn toàn trong trình duyệt bằng
-[ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm); file không được tải lên máy chủ nào.
+Chuyển video có kênh alpha thành MP4 xếp chồng (màu ở trên, mask ở dưới) cho
+`react-native-transparent-video`. Toàn bộ app là **một file HTML** mở trực tiếp bằng trình
+duyệt, không cần cài đặt hay máy chủ. ffmpeg được nhúng sẵn trong file
+([ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm)) nên video không rời khỏi máy.
 
-## Chạy
+## Tạo file HTML
 
 ```sh
 cd converter
 npm install
-npm run dev
+npm run build
 ```
 
-Mở địa chỉ Vite in ra (mặc định `http://localhost:5173`). `npm run build` tạo bản tĩnh trong
-`dist/`, đặt lên hosting tĩnh nào cũng được.
+Kết quả: `dist/alpha-video-converter.html` (khoảng 41 MB). Gửi file này cho người dùng; họ chỉ
+cần bấm đúp để mở bằng Chrome.
 
 ## Dùng
 
@@ -21,7 +22,6 @@ Mở địa chỉ Vite in ra (mặc định `http://localhost:5173`). `npm run b
 2. Chọn chiều rộng, tốc độ khung hình và chất lượng. Muốn file nhẹ nhất: giảm chiều rộng về
    đúng cỡ hiển thị, 24 fps, chất lượng "Nhẹ nhất".
 3. Bấm **Chuyển đổi**, xem thử trên 4 nền gradient, rồi **Tải MP4**.
-4. Chép file vào `demo/assets/videos/` và thêm vào `SOURCES` trong `demo/App.tsx`.
 
 Định dạng đầu vào: ProRes 4444 (`.mov`) hoặc WebM VP9 có alpha. Video không có kênh alpha
 sẽ bị từ chối.
@@ -36,13 +36,17 @@ sẽ bị từ chối.
 
 ## Bên trong
 
+- [`src/main.js`](src/main.js): giao diện và lệnh ffmpeg.
+- [`src/worker.js`](src/worker.js): chạy ffmpeg trong Web Worker.
+- [`src/preview.js`](src/preview.js): ghép hai nửa bằng WebGL để xem thử, giống cách thư viện
+  làm trên Android.
+- [`build.mjs`](build.mjs): gộp tất cả, kèm ffmpeg dạng base64, vào một file HTML.
+
 Lệnh ffmpeg tương đương:
 
 ```sh
 ffmpeg -i input.mov -filter_complex \
-  "[0:v]scale=540:-2,setsar=1,format=rgba,split[c][a];[a]alphaextract[m];[c][m]vstack" \
-  -c:v libx264 -preset medium -crf 26 -pix_fmt yuv420p -an -movflags +faststart output.mp4
+  "[0:v]scale=540:-2,setsar=1,format=rgba,split[c][a];[a]alphaextract[m];[c][m]vstack,scale=out_color_matrix=bt709:out_range=tv,format=yuv420p" \
+  -c:v libx264 -preset medium -crf 26 -colorspace bt709 -color_primaries bt709 -color_trc bt709 \
+  -an -movflags +faststart output.mp4
 ```
-
-Phần xem thử ghép hai nửa bằng WebGL shader giống cách thư viện làm trên Android
-([`src/preview.js`](src/preview.js)).

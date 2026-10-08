@@ -69,14 +69,14 @@ Mask phải trùng vị trí với phần màu ở mọi frame; nếu lệch, vi
 
 ### Tạo file từ After Effects
 
-Xuất comp ra **ProRes 4444, RGB + Alpha, Straight (Unmatted)**, rồi dùng web app trong
-[`converter/`](converter/README.md) để chuyển thành MP4 xếp chồng. App chạy hoàn toàn trong
-trình duyệt và có sẵn phần xem thử trên nền gradient.
+Xuất comp ra **ProRes 4444, RGB + Alpha, Straight (Unmatted)**, rồi dùng công cụ trong
+[`converter/`](converter/README.md) để chuyển thành MP4 xếp chồng. Công cụ là một file HTML
+duy nhất, mở trực tiếp bằng trình duyệt, có sẵn phần xem thử trên nền gradient.
 
 ```sh
 cd converter
 npm install
-npm run dev
+npm run build   # tạo dist/alpha-video-converter.html
 ```
 
 Hoặc dùng ffmpeg trực tiếp:
